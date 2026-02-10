@@ -1,9 +1,11 @@
 "use client";
 
 import { useAuth } from "@/providers/auth-provider";
+import { useUI } from "@/providers/ui-provider";
 
 export function DashboardHeader() {
   const { auth } = useAuth();
+  const { t } = useUI();
   const today = new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
 
   return (
@@ -13,7 +15,7 @@ export function DashboardHeader() {
         {auth?.user.name ? <span className="text-pine">Hello, {auth.user.name}.</span> : "Good evening."}
       </h1>
       <p className="mt-4 max-w-2xl text-lg text-ink/70">
-        Ready to capture a moment of joy today?
+        {t("header_ready")}
       </p>
     </div>
   );

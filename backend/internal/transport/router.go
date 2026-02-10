@@ -46,13 +46,15 @@ func NewRouter(cfg *config.Config, database *gorm.DB) http.Handler {
 		r.Group(func(r chi.Router) {
 			r.Use(appMiddleware.Auth(cfg))
 			r.Get("/analytics/mood", entryHandler.MoodAnalytics)
-			r.Get("/prompts/daily", entryHandler.DailyPrompt)
 			r.Get("/entries/memory-lane", entryHandler.MemoryLane)
+			r.Get("/entries/old-peek", entryHandler.OldEntryPeek)
 			r.Get("/entries", entryHandler.List)
 			r.Post("/entries", entryHandler.Create)
 			r.Get("/entries/{id}", entryHandler.Get)
 			r.Put("/entries/{id}", entryHandler.Update)
 			r.Delete("/entries/{id}", entryHandler.Delete)
+			r.Post("/entries/{id}/lock", entryHandler.Lock)
+			r.Post("/entries/{id}/unlock", entryHandler.Unlock)
 		})
 	})
 

@@ -2,6 +2,7 @@
 
 import { privateRequest } from "@/lib/api";
 import { useAuth } from "@/providers/auth-provider";
+import { useUI } from "@/providers/ui-provider";
 import type { Entry } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
@@ -20,6 +21,7 @@ function plainText(html: string) {
 
 export function EntryList() {
   const { auth } = useAuth();
+  const { t } = useUI();
   const queryClient = useQueryClient();
 
   const entriesQuery = useQuery({
@@ -40,7 +42,7 @@ export function EntryList() {
   });
 
   if (entriesQuery.isLoading) {
-    return <p className="glass-card px-4 py-3 text-sm text-[var(--app-muted)]">Loading entries...</p>;
+    return <p className="glass-card px-4 py-3 text-sm text-[var(--app-muted)]">{t("entry_loading")}</p>;
   }
 
   if (entriesQuery.error) {
@@ -50,13 +52,11 @@ export function EntryList() {
   if (!entriesQuery.data?.length) {
     return (
       <div className="glass-card flex min-h-[58vh] flex-col items-center justify-center px-6 text-center">
-        <div className="inline-flex rounded-full bg-[var(--app-accent)] px-4 py-1 text-sm font-semibold text-[var(--teal)]">Start here</div>
-        <h2 className="mt-5 font-[var(--font-heading)] text-4xl font-semibold">Write your first joyful note</h2>
-        <p className="mt-3 max-w-md text-sm text-[var(--app-muted)]">
-          Begin with one sentence about today. You can always return and expand it later.
-        </p>
+        <div className="inline-flex rounded-full bg-[var(--app-accent)] px-4 py-1 text-sm font-semibold text-[var(--teal)]">{t("entry_start_here")}</div>
+        <h2 className="mt-5 font-[var(--font-heading)] text-4xl font-semibold">{t("entry_first_title")}</h2>
+        <p className="mt-3 max-w-md text-sm text-[var(--app-muted)]">{t("entry_first_desc")}</p>
         <Link href="/dashboard/new" className="btn-primary mt-6 px-6">
-          Create First Entry
+          {t("entry_first_cta")}
         </Link>
       </div>
     );
@@ -77,18 +77,23 @@ export function EntryList() {
                 <h2 className="line-clamp-2 font-[var(--font-heading)] text-2xl font-semibold leading-tight transition group-hover:text-[var(--primary-strong)]">
                   {entry.title}
                 </h2>
+                {entry.oneLine && <p className="mt-1 line-clamp-1 text-xs italic text-[var(--app-muted)]">“{entry.oneLine}”</p>}
               </Link>
-              <span className={`chip border ${moodClass}`}>{entry.mood}</span>
+              <div className="flex items-center gap-1">
+                {entry.someoneWasThere && <span title="Someone was there">⭐</span>}
+                {entry.locked && <span title="Locked">🔒</span>}
+                <span className={`chip border ${moodClass}`}>{entry.mood}</span>
+              </div>
             </div>
 
             <p className="line-clamp-3 text-sm leading-relaxed text-[var(--app-muted)]">
-              {plainText(entry.content) || "No content"}
+              {plainText(entry.content) || t("entry_no_content")}
             </p>
 
             <div className="mt-6 flex items-center justify-between gap-3 border-t border-[var(--app-border)] pt-4">
               <div className="text-xs text-[var(--app-muted)]">
                 <p>{new Date(entry.createdAt).toLocaleDateString()}</p>
-                <p>Updated {new Date(entry.updatedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
+                <p>{t("entry_updated")} {new Date(entry.updatedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
               </div>
 
               <div className="flex items-center gap-2 text-sm">

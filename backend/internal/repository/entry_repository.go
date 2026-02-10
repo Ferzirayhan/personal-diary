@@ -60,3 +60,19 @@ func (r *EntryRepository) ListMemoryLaneByUser(userID uint, month, day int, curr
 		Find(&entries).Error
 	return entries, err
 }
+
+func (r *EntryRepository) RandomOldEntryByUser(userID uint, before time.Time) (*models.Entry, error) {
+	var entry models.Entry
+	if err := r.db.
+		Where("user_id = ? AND created_at < ?", userID, before).
+		Order("RANDOM()").
+		First(&entry).Error; err != nil {
+		return nil, err
+	}
+	return &entry, nil
+}
+
+func (r *EntryRepository) SetLocked(entry *models.Entry, locked bool) error {
+	entry.Locked = locked
+	return r.db.Save(entry).Error
+}

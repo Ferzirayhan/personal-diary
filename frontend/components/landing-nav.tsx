@@ -2,8 +2,12 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useUI } from "@/providers/ui-provider";
+import { UIControls } from "@/components/ui-controls";
 
 export function LandingNav() {
+    const { t } = useUI();
+
     return (
         <motion.header
             initial={{ opacity: 0, y: -20 }}
@@ -18,18 +22,19 @@ export function LandingNav() {
                 </Link>
             </div>
 
-            <nav className="flex items-center gap-6">
+            <nav className="flex items-center gap-3">
+                <UIControls compact />
                 <Link
                     href="/login"
                     className="text-sm font-medium text-ink/70 transition hover:text-ink"
                 >
-                    Sign In
+                    {t("nav_sign_in")}
                 </Link>
                 <Link
                     href="/register"
                     className="rounded-full bg-clay px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-clay/20 transition hover:bg-clay/90 hover:shadow-xl hover:shadow-clay/30 hover:-translate-y-0.5"
                 >
-                    Get Started
+                    {t("nav_get_started")}
                 </Link>
             </nav>
         </motion.header>

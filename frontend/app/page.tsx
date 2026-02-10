@@ -5,10 +5,13 @@ import { LandingNav } from "@/components/landing-nav";
 import { motion } from "framer-motion";
 import { Book, Heart, Sparkles, Sun } from "lucide-react";
 import Link from "next/link";
+import { useUI } from "@/providers/ui-provider";
 
 export default function HomePage() {
+  const { t } = useUI();
+
   return (
-    <div className="flex min-h-screen flex-col overflow-hidden bg-mist">
+    <div className="flex min-h-screen flex-col overflow-hidden bg-[var(--bg)]">
       <LandingNav />
 
       {/* Hero Section */}
@@ -26,14 +29,14 @@ export default function HomePage() {
         >
           <div className="mx-auto mb-6 flex w-fit items-center gap-2 rounded-full border border-clay/10 bg-white/50 px-4 py-1.5 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow">
             <Sparkles className="h-4 w-4 text-clay" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-ink/70">A quiet thank you</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-ink/70">{t("hero_badge")}</span>
           </div>
 
           <h1 className="font-heading text-5xl font-bold leading-[1.1] text-ink sm:text-7xl">
-            For the moment you <span className="italic text-clay">cared</span>.
+            {t("hero_title")}
           </h1>
           <p className="mt-8 text-lg text-ink/70 sm:text-xl">
-            A personal space created as a quiet thank you - for being there when it mattered.
+            {t("hero_subtitle")}
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -41,7 +44,7 @@ export default function HomePage() {
               href="/register"
               className="group relative flex items-center gap-2 rounded-full bg-clay px-8 py-4 text-base font-bold text-white shadow-lg shadow-clay/20 transition-all hover:bg-clay/90 hover:shadow-xl hover:shadow-clay/30 hover:-translate-y-1"
             >
-              Write what matters
+              {t("cta_primary")}
               <motion.span
                 initial={{ x: 0 }}
                 whileHover={{ x: 4 }}
@@ -54,7 +57,7 @@ export default function HomePage() {
               href="/login"
               className="rounded-full bg-white/50 px-8 py-4 text-base font-semibold text-ink shadow-sm ring-1 ring-black/5 backdrop-blur-sm transition-all hover:bg-white hover:shadow-md hover:-translate-y-1"
             >
-              Sign in
+              {t("cta_secondary")}
             </Link>
           </div>
         </motion.div>
@@ -64,20 +67,20 @@ export default function HomePage() {
           {[
             {
               icon: Sun,
-              title: "Daily Check-In",
-              desc: "A place to pause and acknowledge today.",
+              title: t("feature_daily_title"),
+              desc: t("feature_daily_desc"),
               color: "text-amber-600 bg-amber-100/50",
             },
             {
               icon: Book,
-              title: "Private Journal",
-              desc: "Your thoughts stay here. Always.",
+              title: t("feature_private_title"),
+              desc: t("feature_private_desc"),
               color: "text-clay bg-orange-100/50",
             },
             {
               icon: Heart,
-              title: "Mood Tracking",
-              desc: "Understand how each day really felt.",
+              title: t("feature_mood_title"),
+              desc: t("feature_mood_desc"),
               color: "text-rose-600 bg-rose-100/50",
             },
           ].map((feature, i) => (

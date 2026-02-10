@@ -8,12 +8,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#2D2A26", // Deep Charcoal
-        mist: "#FDFCF9", // Warm Cream Background
-        pine: "#4A5D5E", // Muted Teal/Green
-        ember: "#D4A373", // Muted Gold/Paper
-        sand: "#F4EFE7", // Slightly darker cream for cards
-        clay: "#A98467", // Warm Brown
+        ink: "rgb(var(--ink-rgb) / <alpha-value>)",
+        mist: "rgb(var(--mist-rgb) / <alpha-value>)",
+        pine: "rgb(var(--pine-rgb) / <alpha-value>)",
+        ember: "rgb(var(--ember-rgb) / <alpha-value>)",
+        sand: "rgb(var(--sand-rgb) / <alpha-value>)",
+        clay: "rgb(var(--clay-rgb) / <alpha-value>)",
       },
       boxShadow: {
         panel: "0 8px 30px rgba(45, 42, 38, 0.06)",
