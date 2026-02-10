@@ -26,8 +26,8 @@ func Load() (*Config, error) {
 
 	cfg := &Config{
 		AppEnv:            getEnv("APP_ENV", "development"),
-		AppPort:           getEnv("APP_PORT", "8080"),
-		DBDSN:             getEnv("DB_DSN", ""),
+		AppPort:           getEnvAny([]string{"APP_PORT", "PORT"}, "8080"),
+		DBDSN:             getEnvAny([]string{"DB_DSN", "DATABASE_URL"}, ""),
 		JWTSecret:         getEnv("JWT_SECRET", "change-me"),
 		JWTExpiresInHours: expires,
 		CORSAllowedOrigin: getEnv("CORS_ALLOWED_ORIGIN", "http://localhost:3000"),
@@ -39,6 +39,15 @@ func Load() (*Config, error) {
 func getEnv(key, fallback string) string {
 	if value := os.Getenv(key); value != "" {
 		return value
+	}
+	return fallback
+}
+
+func getEnvAny(keys []string, fallback string) string {
+	for _, key := range keys {
+		if value := os.Getenv(key); value != "" {
+			return value
+		}
 	}
 	return fallback
 }

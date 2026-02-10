@@ -47,6 +47,24 @@ Frontend default: `http://localhost:3000`
   - Backend: `DB_DSN`, `JWT_SECRET`, `CORS_ALLOWED_ORIGIN`
   - Frontend: `NEXT_PUBLIC_API_URL`
 
+### Railway (Backend) + Vercel (Frontend)
+
+1. Push repo ke GitHub.
+2. Di Railway, `New Project` -> `Deploy from GitHub repo`.
+3. Saat membuat service backend, set **Root Directory** ke `backend` agar Railway pakai `backend/Dockerfile`.
+4. Tambahkan PostgreSQL di Railway (`New` -> `Database` -> `PostgreSQL`).
+5. Set environment variables backend di Railway:
+   - `DATABASE_URL` (otomatis dari Railway Postgres) atau `DB_DSN`
+   - `JWT_SECRET` (string random panjang)
+   - `CORS_ALLOWED_ORIGIN=https://<your-vercel-domain>`
+   - `APP_ENV=production`
+   - `JWT_EXPIRES_IN_HOURS=24`
+   - `PORT` akan diisi Railway otomatis (backend juga support `APP_PORT`).
+6. Deploy service backend dan copy URL Railway, contoh: `https://your-api.up.railway.app`
+7. Di Vercel (frontend), set:
+   - `NEXT_PUBLIC_API_URL=https://your-api.up.railway.app/api/v1`
+8. Redeploy frontend di Vercel.
+
 ---
 
 ## 🎨 Cara Mengubah Logo & Tulisan
