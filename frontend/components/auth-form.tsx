@@ -55,16 +55,15 @@ export function AuthForm({ type }: Props) {
 
           <div className="relative z-10 mt-12 space-y-6">
             <h1 className="font-heading text-5xl leading-[1.1] text-ink">
-              Capture your <span className="italic text-clay">moments</span> of joy.
+              Especially for <span className="italic text-clay">you</span>.
             </h1>
             <p className="max-w-xs text-lg text-ink/70">
-              A daily ritual to reflect, appreciate, and grow.
+              This space exists because someone showed care at the right moment.
             </p>
           </div>
 
           <div className="relative z-10 mt-12 rounded-2xl bg-white/50 p-6 shadow-sm backdrop-blur-sm">
-            <p className="font-heading text-lg italic text-ink/80">"Write it on your heart that every day is the best day in the year."</p>
-            <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-ink/50">— Ralph Waldo Emerson</p>
+            <p className="font-heading text-lg italic text-ink/80">Built especially for you - thank you for caring when I needed it.</p>
           </div>
         </aside>
 
@@ -72,10 +71,12 @@ export function AuthForm({ type }: Props) {
         <section className="flex flex-col justify-center p-8 sm:p-12 lg:p-16">
           <div className="mb-10 text-center lg:text-left">
             <h2 className="font-heading text-3xl font-semibold text-ink">
-              {type === "register" ? "Join the Journey" : "Welcome Back"}
+              {type === "register" ? "Especially for you." : "Welcome Back"}
             </h2>
             <p className="mt-2 text-muted">
-              {type === "register" ? "Start collecting your memories today." : "Continue writing your story."}
+              {type === "register"
+                ? "This space exists because someone showed care at the right moment."
+                : "Continue writing your story."}
             </p>
           </div>
 
@@ -85,7 +86,7 @@ export function AuthForm({ type }: Props) {
                 <label className="text-xs font-medium uppercase tracking-wider text-ink/60">Name</label>
                 <input
                   className="w-full rounded-2xl border border-stone-200 bg-white/70 px-4 py-3.5 text-ink outline-none transition-all placeholder:text-stone-400 focus:border-clay/50 focus:bg-white focus:ring-4 focus:ring-clay/10"
-                  placeholder="What should we call you?"
+                  placeholder="What should we call you here?"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -126,7 +127,7 @@ export function AuthForm({ type }: Props) {
               disabled={loading}
               className="btn-primary w-full shadow-lg shadow-clay/20 hover:shadow-xl hover:shadow-clay/30"
             >
-              {loading ? "Please wait..." : type === "register" ? "Create Account" : "Sign In"}
+              {loading ? "Please wait..." : type === "register" ? "Create your space" : "Sign In"}
             </button>
           </form>
 
@@ -139,6 +140,11 @@ export function AuthForm({ type }: Props) {
               {type === "register" ? "Log in" : "Create account"}
             </Link>
           </div>
+          {type === "register" && (
+            <p className="mt-5 text-center text-xs text-muted">
+              Built especially for you - thank you for caring when I needed it.
+            </p>
+          )}
         </section>
       </div>
     </div>

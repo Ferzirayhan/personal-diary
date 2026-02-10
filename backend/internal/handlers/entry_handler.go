@@ -112,3 +112,26 @@ func (h *EntryHandler) Delete(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusNoContent)
 }
+
+func (h *EntryHandler) MoodAnalytics(w http.ResponseWriter, r *http.Request) {
+	data, err := h.service.MoodAnalytics(middleware.UserIDFromContext(r.Context()))
+	if err != nil {
+		httpx.Error(w, http.StatusInternalServerError, "failed to calculate mood analytics")
+		return
+	}
+	httpx.JSON(w, http.StatusOK, data)
+}
+
+func (h *EntryHandler) DailyPrompt(w http.ResponseWriter, r *http.Request) {
+	data := h.service.DailyPrompt(middleware.UserIDFromContext(r.Context()))
+	httpx.JSON(w, http.StatusOK, data)
+}
+
+func (h *EntryHandler) MemoryLane(w http.ResponseWriter, r *http.Request) {
+	data, err := h.service.MemoryLane(middleware.UserIDFromContext(r.Context()))
+	if err != nil {
+		httpx.Error(w, http.StatusInternalServerError, "failed to load memory lane")
+		return
+	}
+	httpx.JSON(w, http.StatusOK, data)
+}

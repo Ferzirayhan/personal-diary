@@ -45,6 +45,9 @@ func NewRouter(cfg *config.Config, database *gorm.DB) http.Handler {
 
 		r.Group(func(r chi.Router) {
 			r.Use(appMiddleware.Auth(cfg))
+			r.Get("/analytics/mood", entryHandler.MoodAnalytics)
+			r.Get("/prompts/daily", entryHandler.DailyPrompt)
+			r.Get("/entries/memory-lane", entryHandler.MemoryLane)
 			r.Get("/entries", entryHandler.List)
 			r.Post("/entries", entryHandler.Create)
 			r.Get("/entries/{id}", entryHandler.Get)

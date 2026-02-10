@@ -2,6 +2,7 @@ package repository
 
 import (
 	"personal-diary/backend/internal/models"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -38,4 +39,24 @@ func (r *EntryRepository) Update(entry *models.Entry) error {
 
 func (r *EntryRepository) Delete(entry *models.Entry) error {
 	return r.db.Delete(entry).Error
+}
+
+func (r *EntryRepository) ListByUserBetween(userID uint, start, end time.Time) ([]models.Entry, error) {
+	var entries []models.Entry
+	err := r.db.
+		Where("user_id = ? AND created_at >= ? AND created_at < ?", userID, start, end).
+		Order("created_at desc").
+		Find(&entries).Error
+	return entries, err
+}
+
+func (r *EntryRepository) ListMemoryLaneByUser(userID uint, month, day int, currentYear int) ([]models.Entry, error) {
+	var entries []models.Entry
+	err := r.db.
+		Where("user_id = ?", userID).
+		Where("EXTRACT(MONTH FROM created_at) = ? AND EXTRACT(DAY FROM created_at) = ?", month, day).
+		Where("EXTRACT(YEAR FROM created_at) < ?", currentYear).
+		Order("created_at desc").
+		Find(&entries).Error
+	return entries, err
 }

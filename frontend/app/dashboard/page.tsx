@@ -1,5 +1,6 @@
 import { AppShell } from "@/components/app-shell";
 import { DashboardHeader } from "@/components/dashboard-header";
+import { DashboardInsights } from "@/components/dashboard-insights";
 import { EntryList } from "@/components/entry-list";
 import { Protected } from "@/components/protected";
 import Link from "next/link";
@@ -17,6 +18,7 @@ export default function DashboardPage() {
             Write Check-in
           </Link>
         </section>
+        <DashboardInsights />
         <EntryList />
       </AppShell>
     </Protected>
