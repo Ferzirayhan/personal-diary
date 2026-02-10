@@ -7,6 +7,7 @@ import { privateRequest } from "@/lib/api";
 import { useAuth } from "@/providers/auth-provider";
 import type { Entry } from "@/types";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 
 export default function EditEntryPage() {
@@ -25,8 +26,17 @@ export default function EditEntryPage() {
   return (
     <Protected>
       <AppShell>
-        <h1 className="mb-5 font-[var(--font-heading)] text-3xl font-semibold">Edit entry</h1>
-        {entryQuery.isLoading && <p>Loading...</p>}
+        <div className="mb-6">
+          <Link href="/dashboard" className="text-sm text-[var(--app-muted)] transition hover:text-[var(--app-foreground)]">
+            Back to all entries
+          </Link>
+          <h1 className="mt-2 font-[var(--font-heading)] text-3xl font-semibold">Edit Entry</h1>
+        </div>
+        {entryQuery.isLoading && (
+          <p className="rounded-xl border border-[var(--app-border)] bg-[var(--app-surface)] px-4 py-3 text-sm text-[var(--app-muted)]">
+            Loading...
+          </p>
+        )}
         {entryQuery.error && <p className="rounded-lg bg-red-50 px-3 py-2 text-red-700">{(entryQuery.error as Error).message}</p>}
         {entryQuery.data && <EntryForm initial={entryQuery.data} />}
       </AppShell>

@@ -54,12 +54,18 @@ func NewRouter(cfg *config.Config, database *gorm.DB) http.Handler {
 	return r
 }
 
-func cors(origin string) func(http.Handler) http.Handler {
+func cors(allowedOrigin string) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Access-Control-Allow-Origin", origin)
+			origin := r.Header.Get("Origin")
+			// Allow config origin OR any localhost/127.0.0.1 for dev convenience
+			if origin == allowedOrigin || len(origin) == 0 || (len(origin) >= 16 && origin[:16] == "http://localhost") || (len(origin) >= 16 && origin[:16] == "http://127.0.0.1") {
+				w.Header().Set("Access-Control-Allow-Origin", origin)
+			}
 			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Credentials", "true")
+
 			if r.Method == http.MethodOptions {
 				w.WriteHeader(http.StatusNoContent)
 				return

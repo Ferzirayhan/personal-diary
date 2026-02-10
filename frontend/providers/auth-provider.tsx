@@ -19,8 +19,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    setAuth(getAuth());
-    setReady(true);
+    console.log("AuthProvider mounted. Checking auth...");
+    try {
+      const stored = getAuth();
+      console.log("Stored auth:", stored);
+      setAuth(stored);
+    } catch (e) {
+      console.error("Error reading auth:", e);
+    } finally {
+      setReady(true);
+      console.log("AuthProvider ready set to true");
+    }
   }, []);
 
   const value = useMemo<AuthContextValue>(

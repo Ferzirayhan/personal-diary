@@ -26,7 +26,7 @@ export function Tiptap({ content, onChange, placeholder, editable = true }: Tipt
         editorProps: {
             attributes: {
                 class:
-                    "prose prose-sm sm:prose-base focus:outline-none min-h-[300px] w-full rounded-xl border border-ink/20 px-4 py-3 outline-none ring-pine focus:ring-2",
+                    "prose prose-sm prose-headings:font-[var(--font-heading)] sm:prose-base min-h-[420px] w-full rounded-xl border border-[var(--app-border)] bg-white px-4 py-3 text-[var(--app-foreground)] outline-none ring-2 ring-transparent focus:ring-[var(--app-ring)]",
             },
         },
         onUpdate: ({ editor }) => {

@@ -15,7 +15,7 @@ export function Protected({ children }: { children: ReactNode }) {
   }, [auth, router]);
 
   if (!auth) {
-    return <div className="p-6 text-sm">Redirecting...</div>;
+    return <div className="p-6 text-sm text-ink/70">Redirecting...</div>;
   }
 
   return <>{children}</>;

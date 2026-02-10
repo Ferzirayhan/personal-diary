@@ -4,15 +4,38 @@
 
 :root {
   color-scheme: light;
+  --font-heading: system-ui, -apple-system, sans-serif;
+  --font-body: system-ui, -apple-system, sans-serif;
+  --bg: #f5f7f4;
+  --text: #102226;
+  --surface: rgba(255, 255, 255, 0.74);
+  --surface-border: rgba(16, 34, 38, 0.12);
+  --ring: rgba(231, 116, 43, 0.35);
+  --app-background: #ffffff;
+  --app-foreground: #111827;
+  --app-surface: rgba(255, 255, 255, 0.95);
+  --app-border: rgba(17, 24, 39, 0.12);
+  --app-muted: #6b7280;
+  --app-accent: #eef2f7;
+  --app-primary: #111827;
+  --app-primary-foreground: #ffffff;
+  --app-ring: rgba(148, 163, 184, 0.6);
 }
 
 body {
   min-height: 100vh;
-  color: #102226;
-  background: #f5f7f4;
+  color: var(--text);
+  background: var(--bg);
+  background-image:
+    radial-gradient(circle at 8% 14%, rgba(231, 116, 43, 0.2), transparent 26%),
+    radial-gradient(circle at 88% 10%, rgba(32, 91, 90, 0.18), transparent 30%);
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+::selection {
+  background: rgba(231, 116, 43, 0.24);
 }

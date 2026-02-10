@@ -46,3 +46,20 @@ Frontend default: `http://localhost:3000`
 - Pastikan variabel env produksi sudah terisi:
   - Backend: `DB_DSN`, `JWT_SECRET`, `CORS_ALLOWED_ORIGIN`
   - Frontend: `NEXT_PUBLIC_API_URL`
+
+---
+
+## 🎨 Cara Mengubah Logo & Tulisan
+
+### 1. Mengubah Logo (Judul Aplikasi)
+Buka file `frontend/components/app-shell.tsx`.
+Cari tulisan `"My Diary"` dan ubah sesuai keinginanmu (ada di 2 tempat: tampilan Desktop & Mobile).
+
+### 2. Mengubah Judul Tab Browser
+Buka file `frontend/app/layout.tsx`.
+Ubah bagian `title` dan `description` di dalam `metadata`.
+
+### 3. Mengubah Tulisan di Halaman
+- **Dashboard (List Entry):** `frontend/components/entry-list.tsx`
+- **Halaman Login/Register:** `frontend/app/(auth)/login/page.tsx` & `register/page.tsx`
+- **Form Entry Baru:** `frontend/components/entry-form.tsx`
