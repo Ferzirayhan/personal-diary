@@ -27,17 +27,14 @@ export default function EditEntryPage() {
     <Protected>
       <AppShell>
         <div className="mb-6">
-          <Link href="/dashboard" className="text-sm text-[var(--app-muted)] transition hover:text-[var(--app-foreground)]">
+          <Link href="/dashboard" className="text-sm font-medium text-[var(--app-muted)] transition hover:text-[var(--app-foreground)]">
             Back to all entries
           </Link>
-          <h1 className="mt-2 font-[var(--font-heading)] text-3xl font-semibold">Edit Entry</h1>
+          <h1 className="mt-2 font-[var(--font-heading)] text-4xl font-semibold">Edit Entry</h1>
         </div>
-        {entryQuery.isLoading && (
-          <p className="rounded-xl border border-[var(--app-border)] bg-[var(--app-surface)] px-4 py-3 text-sm text-[var(--app-muted)]">
-            Loading...
-          </p>
-        )}
-        {entryQuery.error && <p className="rounded-lg bg-red-50 px-3 py-2 text-red-700">{(entryQuery.error as Error).message}</p>}
+
+        {entryQuery.isLoading && <p className="glass-card px-4 py-3 text-sm text-[var(--app-muted)]">Loading...</p>}
+        {entryQuery.error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{(entryQuery.error as Error).message}</p>}
         {entryQuery.data && <EntryForm initial={entryQuery.data} />}
       </AppShell>
     </Protected>

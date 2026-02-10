@@ -40,45 +40,43 @@ export default function EntryDetailPage() {
   return (
     <Protected>
       <AppShell>
-        {entryQuery.isLoading && (
-          <p className="rounded-xl border border-[var(--app-border)] bg-[var(--app-surface)] px-4 py-3 text-sm text-[var(--app-muted)]">
-            Loading entry...
-          </p>
-        )}
-        {entryQuery.error && <p className="rounded-lg bg-red-50 px-3 py-2 text-red-700">{(entryQuery.error as Error).message}</p>}
+        {entryQuery.isLoading && <p className="glass-card px-4 py-3 text-sm text-[var(--app-muted)]">Loading entry...</p>}
+        {entryQuery.error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{(entryQuery.error as Error).message}</p>}
 
         {entryQuery.data && (
           <>
-            <div className="mb-6">
-              <Link href="/dashboard" className="text-sm text-[var(--app-muted)] transition hover:text-[var(--app-foreground)]">
+            <div className="mb-5">
+              <Link href="/dashboard" className="text-sm font-medium text-[var(--app-muted)] transition hover:text-[var(--app-foreground)]">
                 Back to all entries
               </Link>
-              <div className="mt-3 flex items-start justify-between gap-3">
+            </div>
+
+            <section className="glass-card mb-5 p-6 sm:p-7">
+              <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <h1 className="font-[var(--font-heading)] text-3xl font-semibold">{entryQuery.data.title}</h1>
-                  <p className="mt-1 text-sm text-[var(--app-muted)]">
-                    {new Date(entryQuery.data.createdAt).toLocaleDateString()} - Updated {new Date(entryQuery.data.updatedAt).toLocaleDateString()}
+                  <span className="chip capitalize">{entryQuery.data.mood}</span>
+                  <h1 className="mt-3 font-[var(--font-heading)] text-4xl font-semibold leading-tight">{entryQuery.data.title}</h1>
+                  <p className="mt-2 text-sm text-[var(--app-muted)]">
+                    {new Date(entryQuery.data.createdAt).toLocaleDateString()} · Updated {new Date(entryQuery.data.updatedAt).toLocaleDateString()}
                   </p>
                 </div>
+
                 <div className="flex items-center gap-2">
-                  <Link
-                    href={`/dashboard/${entryQuery.data.id}/edit`}
-                    className="rounded-lg border border-[var(--app-border)] bg-[var(--app-accent)] px-3 py-2 text-sm text-[var(--app-foreground)] transition hover:opacity-90"
-                  >
+                  <Link href={`/dashboard/${entryQuery.data.id}/edit`} className="btn-ghost">
                     Edit
                   </Link>
                   <button
                     type="button"
-                    className="rounded-lg border border-[var(--app-border)] bg-[var(--app-accent)] px-3 py-2 text-sm text-red-700 transition hover:opacity-90"
+                    className="rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-medium text-red-700 transition hover:bg-red-100"
                     onClick={() => setConfirmDelete(true)}
                   >
                     Delete
                   </button>
                 </div>
               </div>
-            </div>
+            </section>
 
-            <article className="rounded-xl border border-[var(--app-border)] bg-[var(--app-surface)] p-8">
+            <article className="glass-card p-7 sm:p-8">
               <div className="prose prose-sm max-w-none text-[var(--app-foreground)] sm:prose-base" dangerouslySetInnerHTML={{ __html: entryQuery.data.content }} />
             </article>
           </>
@@ -86,20 +84,16 @@ export default function EntryDetailPage() {
 
         {confirmDelete && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4">
-            <div className="w-full max-w-md rounded-xl border border-[var(--app-border)] bg-white p-6">
-              <h2 className="font-[var(--font-heading)] text-xl font-semibold">Delete Entry</h2>
-              <p className="mt-2 text-sm text-[var(--app-muted)]">Are you sure you want to delete this entry? This action cannot be undone.</p>
+            <div className="w-full max-w-md rounded-2xl border border-[var(--app-border)] bg-white p-6 shadow-xl">
+              <h2 className="font-[var(--font-heading)] text-2xl font-semibold">Delete Entry</h2>
+              <p className="mt-2 text-sm text-[var(--app-muted)]">Are you sure? This action cannot be undone.</p>
               <div className="mt-6 flex justify-end gap-3">
-                <button
-                  type="button"
-                  className="rounded-lg bg-[var(--app-accent)] px-4 py-2 text-sm text-[var(--app-foreground)]"
-                  onClick={() => setConfirmDelete(false)}
-                >
+                <button type="button" className="btn-ghost" onClick={() => setConfirmDelete(false)}>
                   Cancel
                 </button>
                 <button
                   type="button"
-                  className="rounded-lg bg-red-600 px-4 py-2 text-sm text-white disabled:opacity-70"
+                  className="rounded-xl bg-[var(--danger)] px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-70"
                   onClick={() => deleteMutation.mutate()}
                   disabled={deleteMutation.isPending}
                 >

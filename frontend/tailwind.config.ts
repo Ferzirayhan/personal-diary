@@ -8,21 +8,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#102226",
-        mist: "#f5f7f4",
-        pine: "#205b5a",
-        ember: "#e7742b",
-        sand: "#f4efe7",
-        clay: "#b8653b",
+        ink: "#2D2A26", // Deep Charcoal
+        mist: "#FDFCF9", // Warm Cream Background
+        pine: "#4A5D5E", // Muted Teal/Green
+        ember: "#D4A373", // Muted Gold/Paper
+        sand: "#F4EFE7", // Slightly darker cream for cards
+        clay: "#A98467", // Warm Brown
       },
       boxShadow: {
-        panel: "0 16px 35px rgba(16, 34, 38, 0.08)",
-        soft: "0 10px 25px rgba(16, 34, 38, 0.12)",
+        panel: "0 8px 30px rgba(45, 42, 38, 0.06)",
+        soft: "0 4px 20px rgba(45, 42, 38, 0.04)",
       },
       backgroundImage: {
-        paper: "radial-gradient(circle at 20% 10%, rgba(231,116,43,0.16), transparent 35%), radial-gradient(circle at 75% 40%, rgba(32,91,90,0.18), transparent 40%)",
+        paper: "linear-gradient(to bottom, #FDFCF9, #F4EFE7)",
         aurora:
-          "radial-gradient(circle at 5% 15%, rgba(231,116,43,0.3), transparent 30%), radial-gradient(circle at 82% 12%, rgba(32,91,90,0.28), transparent 42%), linear-gradient(135deg, #f5f7f4 0%, #f4efe7 100%)",
+          "radial-gradient(circle at 5% 15%, rgba(212, 163, 115, 0.15), transparent 30%), radial-gradient(circle at 82% 12%, rgba(74, 93, 94, 0.12), transparent 42%), linear-gradient(135deg, #FDFCF9 0%, #F4EFE7 100%)",
       },
       keyframes: {
         float: {
@@ -35,8 +35,8 @@ const config: Config = {
         },
       },
       animation: {
-        float: "float 5s ease-in-out infinite",
-        reveal: "reveal 500ms ease-out forwards",
+        float: "float 6s ease-in-out infinite",
+        reveal: "reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards",
       },
     },
   },

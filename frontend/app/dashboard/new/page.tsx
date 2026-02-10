@@ -8,10 +8,10 @@ export default function NewEntryPage() {
     <Protected>
       <AppShell>
         <div className="mb-6">
-          <Link href="/dashboard" className="text-sm text-[var(--app-muted)] transition hover:text-[var(--app-foreground)]">
+          <Link href="/dashboard" className="text-sm font-medium text-[var(--app-muted)] transition hover:text-[var(--app-foreground)]">
             Back to all entries
           </Link>
-          <h1 className="mt-2 font-[var(--font-heading)] text-3xl font-semibold">New Entry</h1>
+          <h1 className="mt-2 font-[var(--font-heading)] text-4xl font-semibold">Create New Entry</h1>
         </div>
         <EntryForm />
       </AppShell>

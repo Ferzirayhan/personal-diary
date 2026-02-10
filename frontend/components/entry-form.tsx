@@ -1,7 +1,7 @@
 "use client";
 
-import { privateRequest } from "@/lib/api";
 import { Tiptap } from "@/components/tiptap";
+import { privateRequest } from "@/lib/api";
 import { useAuth } from "@/providers/auth-provider";
 import type { Entry } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -11,6 +11,8 @@ import { useState } from "react";
 type Props = {
   initial?: Entry;
 };
+
+const moodOptions = ["calm", "happy", "focused", "tired", "anxious"];
 
 export function EntryForm({ initial }: Props) {
   const { auth } = useAuth();
@@ -46,52 +48,48 @@ export function EntryForm({ initial }: Props) {
         setError("");
         mutation.mutate();
       }}
-      className="space-y-6"
+      className="space-y-5"
     >
-      <input
-        className="w-full border-none bg-transparent font-[var(--font-heading)] text-4xl font-semibold outline-none placeholder:text-[var(--app-muted)]/70"
-        placeholder="Entry title..."
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
+      <section className="glass-card p-6 sm:p-7">
+        <label className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--app-muted)]">Title</label>
+        <input
+          className="mt-2 w-full border-none bg-transparent font-[var(--font-heading)] text-4xl font-semibold leading-tight outline-none placeholder:text-[var(--app-muted)]/70"
+          placeholder="How did your day feel?"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
 
-      <div className="rounded-lg border border-[var(--app-border)] bg-[var(--app-surface)] p-4">
-        <label className="mb-2 block text-sm text-[var(--app-muted)]" htmlFor="mood">
-          Mood
-        </label>
-        <select
-          id="mood"
-          className="w-full rounded-lg border border-[var(--app-border)] bg-white px-4 py-2.5 text-sm outline-none ring-2 ring-transparent transition focus:ring-[var(--app-ring)]"
-          value={mood}
-          onChange={(e) => setMood(e.target.value)}
-        >
-          <option value="calm">Calm</option>
-          <option value="happy">Happy</option>
-          <option value="focused">Focused</option>
-          <option value="tired">Tired</option>
-          <option value="anxious">Anxious</option>
-        </select>
-      </div>
+        <div className="mt-6 flex flex-wrap items-center gap-2">
+          <span className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--app-muted)]">Mood</span>
+          {moodOptions.map((option) => (
+            <button
+              key={option}
+              type="button"
+              className={`rounded-full border px-3 py-1 text-sm font-medium capitalize transition ${
+                mood === option
+                  ? "border-transparent bg-[var(--app-primary)] text-[var(--app-primary-foreground)]"
+                  : "border-[var(--app-border)] bg-white text-[var(--app-muted)] hover:text-[var(--app-foreground)]"
+              }`}
+              onClick={() => setMood(option)}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      </section>
 
-      <div className="rounded-xl border border-[var(--app-border)] bg-[var(--app-surface)] p-6">
-        <Tiptap content={content} onChange={(newContent) => setContent(newContent)} placeholder="Start writing your thoughts..." />
-      </div>
+      <section className="glass-card p-4 sm:p-6">
+        <Tiptap content={content} onChange={(newContent) => setContent(newContent)} placeholder="Write your reflection, gratitude, and next move..." />
+      </section>
 
-      {error && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+      {error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
 
-      <div className="flex items-center justify-between border-t border-[var(--app-border)] pt-4">
-        <button
-          className="rounded-lg px-4 py-2.5 text-[var(--app-muted)] transition hover:bg-[var(--app-accent)] hover:text-[var(--app-foreground)]"
-          type="button"
-          onClick={() => router.push("/dashboard")}
-        >
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <button className="btn-ghost" type="button" onClick={() => router.push("/dashboard")}>
           Cancel
         </button>
-        <button
-          className="rounded-lg bg-[var(--app-primary)] px-6 py-2.5 font-medium text-[var(--app-primary-foreground)] transition hover:opacity-90 disabled:opacity-70"
-          type="submit"
-          disabled={mutation.isPending}
-        >
+        <button className="btn-primary px-6" type="submit" disabled={mutation.isPending}>
           {mutation.isPending ? "Saving..." : initial ? "Update Entry" : "Save Entry"}
         </button>
       </div>

@@ -1,136 +1,137 @@
 "use client";
 
 import { useAuth } from "@/providers/auth-provider";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { ReactNode, useState } from "react";
+import { usePathname } from "next/navigation";
+import { ReactNode, useMemo, useState } from "react";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { auth, logout } = useAuth();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const navItems = useMemo(
+    () => [
+      {
+        href: "/dashboard",
+        label: "All Entries",
+        active:
+          pathname === "/dashboard" ||
+          (pathname.startsWith("/dashboard/") && !pathname.startsWith("/dashboard/new")),
+      },
+      {
+        href: "/dashboard/new",
+        label: "New Entry",
+        active: pathname === "/dashboard/new",
+      },
+    ],
+    [pathname]
+  );
+
   const closeMenu = () => setMobileMenuOpen(false);
-  const isEntries = pathname === "/dashboard" || (pathname.startsWith("/dashboard/") && !pathname.startsWith("/dashboard/new"));
-  const isNewEntry = pathname === "/dashboard/new";
 
   return (
-    <div className="min-h-screen bg-[var(--app-background)] text-[var(--app-foreground)]">
-      <header className="fixed inset-x-0 top-0 z-40 flex h-16 items-center justify-between border-b border-[var(--app-border)] bg-[var(--app-surface)] px-4 backdrop-blur lg:hidden">
-        <Link
-          href="/dashboard"
-          className="font-[var(--font-heading)] text-xl font-semibold tracking-tight"
-          onClick={closeMenu}
-        >
-          {auth?.user.name ? `${auth.user.name}'s Diary` : 'My Diary'}
-        </Link>
-        <button
-          type="button"
-          className="rounded-lg border border-[var(--app-border)] bg-white px-3 py-2 text-sm transition hover:bg-[var(--app-accent)]"
-          onClick={() => setMobileMenuOpen((open) => !open)}
-          aria-expanded={mobileMenuOpen}
-          aria-controls="mobile-diary-nav"
-        >
-          {mobileMenuOpen ? "Close" : "Menu"}
-        </button>
-      </header>
-
-      {mobileMenuOpen && (
-        <div
-          id="mobile-diary-nav"
-          className="fixed inset-0 z-30 flex flex-col bg-[var(--app-background)] pt-16 lg:hidden"
-        >
-          <div className="border-b border-[var(--app-border)] px-6 py-5">
-            <p className="text-sm font-medium">{auth?.user.name}</p>
-            <p className="truncate text-sm text-[var(--app-muted)]">{auth?.user.email}</p>
-          </div>
-          <nav className="flex-1 space-y-2 p-4">
-            <Link
-              href="/dashboard"
-              className={`block rounded-lg px-4 py-3 transition ${isEntries
-                ? "bg-[var(--app-accent)] text-[var(--app-foreground)]"
-                : "text-[var(--app-muted)] hover:bg-[var(--app-accent)] hover:text-[var(--app-foreground)]"
-                }`}
-              onClick={closeMenu}
-            >
-              All Entries
-            </Link>
-            <Link
-              href="/dashboard/new"
-              className={`block rounded-lg px-4 py-3 transition ${isNewEntry
-                ? "bg-[var(--app-accent)] text-[var(--app-foreground)]"
-                : "text-[var(--app-muted)] hover:bg-[var(--app-accent)] hover:text-[var(--app-foreground)]"
-                }`}
-              onClick={closeMenu}
-            >
-              New Entry
-            </Link>
-          </nav>
-          <div className="border-t border-[var(--app-border)] p-4">
+    <div className="min-h-screen text-[var(--app-foreground)]">
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-stone-100 bg-mist/80 backdrop-blur-xl lg:hidden">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+          <div className="flex items-center gap-3">
             <button
               type="button"
-              className="w-full rounded-lg px-4 py-3 text-left text-[var(--app-muted)] transition hover:bg-[var(--app-accent)] hover:text-[var(--app-foreground)]"
-              onClick={logout}
+              className="btn-ghost px-3 py-2"
+              onClick={() => setMobileMenuOpen((open) => !open)}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-diary-nav"
             >
-              Logout
+              {mobileMenuOpen ? "Close" : "Menu"}
             </button>
+            <Link href="/dashboard" className="font-heading text-xl font-bold tracking-tight text-ink" onClick={closeMenu}>
+              HanaDiary
+            </Link>
           </div>
         </div>
-      )}
+      </header>
 
-      <div className="flex min-h-screen">
-        <aside className="hidden h-screen w-72 shrink-0 flex-col border-r border-[var(--app-border)] bg-[var(--app-surface)] lg:flex">
-          <div className="border-b border-[var(--app-border)] px-6 py-6">
-            <Link href="/dashboard" className="font-[var(--font-heading)] text-2xl font-semibold tracking-tight">
-              {auth?.user.name ? `${auth.user.name}'s Diary` : 'My Diary'}
-            </Link>
+      <aside className="fixed bottom-0 left-0 top-0 hidden w-72 border-r border-stone-100 bg-mist px-6 pb-6 pt-8 lg:flex lg:flex-col">
+        <Link href="/dashboard" className="mb-10 block font-heading text-2xl font-bold tracking-tight text-ink">
+          HanaDiary
+        </Link>
+
+        <div className="mb-8">
+          <p className="text-xs font-semibold uppercase tracking-wider text-ink/40">Today's Focus</p>
+          <div className="mt-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
+            <p className="font-heading text-lg font-medium leading-tight text-ink">
+              {auth?.user.name ? `${auth.user.name}'s Journal` : "Your Journal"}
+            </p>
+            <p className="mt-2 text-sm text-ink/60">Capture a moment of joy.</p>
           </div>
-          <div className="border-b border-[var(--app-border)] px-6 py-5">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--app-primary)] text-sm font-semibold text-[var(--app-primary-foreground)]">
-                {auth?.user.name?.slice(0, 1).toUpperCase() || "U"}
-              </div>
-              <div className="min-w-0">
-                <p className="truncate text-sm font-medium">{auth?.user.name}</p>
-                <p className="truncate text-sm text-[var(--app-muted)]">{auth?.user.email}</p>
-              </div>
+        </div>
+
+        <nav className="space-y-1">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all ${item.active
+                ? "bg-white text-ink shadow-sm ring-1 ring-black/5"
+                : "text-ink/60 hover:bg-white/50 hover:text-ink"
+                }`}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="mt-auto border-t border-stone-100 pt-6">
+          <div className="flex items-center gap-3 px-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-clay/10 text-xs font-bold text-clay">
+              {auth?.user.name?.[0] || "U"}
+            </div>
+            <div className="flex-1 overflow-hidden">
+              <p className="truncate text-sm font-medium text-ink">{auth?.user.name}</p>
+              <p className="truncate text-xs text-ink/50">{auth?.user.email}</p>
             </div>
           </div>
-          <nav className="flex-1 space-y-2 p-4 text-sm">
-            <Link
-              href="/dashboard"
-              className={`block rounded-lg px-4 py-3 transition ${isEntries
-                ? "bg-[var(--app-accent)] text-[var(--app-foreground)]"
-                : "text-[var(--app-muted)] hover:bg-[var(--app-accent)] hover:text-[var(--app-foreground)]"
-                }`}
-            >
-              All Entries
-            </Link>
-            <Link
-              href="/dashboard/new"
-              className={`block rounded-lg px-4 py-3 transition ${isNewEntry
-                ? "bg-[var(--app-accent)] text-[var(--app-foreground)]"
-                : "text-[var(--app-muted)] hover:bg-[var(--app-accent)] hover:text-[var(--app-foreground)]"
-                }`}
-            >
-              New Entry
-            </Link>
-          </nav>
-          <div className="border-t border-[var(--app-border)] p-4">
-            <button
-              type="button"
-              className="w-full rounded-lg px-4 py-3 text-left text-[var(--app-muted)] transition hover:bg-[var(--app-accent)] hover:text-[var(--app-foreground)]"
-              onClick={logout}
-            >
+          <button
+            type="button"
+            className="mt-4 flex w-full items-center justify-center rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-ink shadow-sm transition-all hover:bg-stone-50"
+            onClick={logout}
+          >
+            Sign out
+          </button>
+        </div>
+      </aside>
+
+      {mobileMenuOpen && (
+        <>
+          <button className="fixed inset-0 z-40 bg-black/35" onClick={closeMenu} aria-label="Close menu" />
+          <div id="mobile-diary-nav" className="fixed inset-y-0 left-0 z-50 w-72 border-r border-[var(--app-border)] bg-white p-5 shadow-2xl lg:hidden">
+            <p className="font-[var(--font-heading)] text-xl font-semibold">HanaDiary</p>
+            <p className="mt-1 text-sm text-[var(--app-muted)]">{auth?.user.name}</p>
+            <nav className="mt-5 space-y-2">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`block rounded-xl px-4 py-3 text-sm font-medium transition ${item.active
+                    ? "bg-[var(--app-accent)] text-[var(--app-foreground)]"
+                    : "text-[var(--app-muted)] hover:bg-[var(--app-accent)] hover:text-[var(--app-foreground)]"
+                    }`}
+                  onClick={closeMenu}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+            <button type="button" className="btn-ghost mt-6 w-full" onClick={logout}>
               Logout
             </button>
           </div>
-        </aside>
+        </>
+      )}
 
-        <main className="flex-1 px-4 pb-8 pt-20 lg:px-8 lg:pt-8">
-          <div className="mx-auto max-w-5xl">{children}</div>
-        </main>
-      </div>
+      <main className="px-4 pb-10 pt-20 lg:pl-[19.5rem] lg:pr-6">
+        <div className="mx-auto max-w-5xl">{children}</div>
+      </main>
     </div>
   );
 }

@@ -37,62 +37,108 @@ export function AuthForm({ type }: Props) {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[var(--app-background)] px-4 py-10">
-      <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--app-primary)] text-xl font-semibold text-[var(--app-primary-foreground)]">
-            PD
-          </div>
-          <h1 className="font-[var(--font-heading)] text-4xl font-semibold">
-            {type === "register" ? "Create your account" : "Welcome back"}
-          </h1>
-          <p className="mt-2 text-[var(--app-muted)]">
-            {type === "register" ? "Start your personal journaling journey" : "Sign in to your personal diary"}
-          </p>
-        </div>
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-mist px-4 py-8">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 -z-10 bg-aurora opacity-60" />
+      <div className="absolute -left-20 top-20 h-64 w-64 animate-float rounded-full bg-ember/10 blur-3xl" />
+      <div className="absolute -bottom-20 right-20 h-80 w-80 animate-float rounded-full bg-pine/10 blur-3xl" style={{ animationDelay: "2s" }} />
 
-        <section className="rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface)] p-8 shadow-sm">
+      <div className="grid w-full max-w-4xl overflow-hidden rounded-[2rem] border border-white/50 bg-white/40 shadow-panel backdrop-blur-xl lg:grid-cols-2">
+        {/* Left Side (Visual/Brand) */}
+        <aside className="relative hidden flex-col justify-between overflow-hidden bg-pine/5 p-12 text-ink lg:flex">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1616628188859-7a11abb6fcc9?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-overlay" />
+          <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent" />
+
+          <div className="relative z-10">
+            <p className="font-heading text-xl font-bold tracking-tight text-pine">HanaDiary</p>
+          </div>
+
+          <div className="relative z-10 mt-12 space-y-6">
+            <h1 className="font-heading text-5xl leading-[1.1] text-ink">
+              Capture your <span className="italic text-clay">moments</span> of joy.
+            </h1>
+            <p className="max-w-xs text-lg text-ink/70">
+              A daily ritual to reflect, appreciate, and grow.
+            </p>
+          </div>
+
+          <div className="relative z-10 mt-12 rounded-2xl bg-white/50 p-6 shadow-sm backdrop-blur-sm">
+            <p className="font-heading text-lg italic text-ink/80">"Write it on your heart that every day is the best day in the year."</p>
+            <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-ink/50">— Ralph Waldo Emerson</p>
+          </div>
+        </aside>
+
+        {/* Right Side (Form) */}
+        <section className="flex flex-col justify-center p-8 sm:p-12 lg:p-16">
+          <div className="mb-10 text-center lg:text-left">
+            <h2 className="font-heading text-3xl font-semibold text-ink">
+              {type === "register" ? "Join the Journey" : "Welcome Back"}
+            </h2>
+            <p className="mt-2 text-muted">
+              {type === "register" ? "Start collecting your memories today." : "Continue writing your story."}
+            </p>
+          </div>
+
           <form className="space-y-5" onSubmit={submit}>
             {type === "register" && (
-              <input
-                className="w-full rounded-lg border border-[var(--app-border)] bg-white px-4 py-2.5 outline-none ring-2 ring-transparent transition focus:ring-[var(--app-ring)]"
-                placeholder="Your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium uppercase tracking-wider text-ink/60">Name</label>
+                <input
+                  className="w-full rounded-2xl border border-stone-200 bg-white/70 px-4 py-3.5 text-ink outline-none transition-all placeholder:text-stone-400 focus:border-clay/50 focus:bg-white focus:ring-4 focus:ring-clay/10"
+                  placeholder="What should we call you?"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
             )}
-            <input
-              className="w-full rounded-lg border border-[var(--app-border)] bg-white px-4 py-2.5 outline-none ring-2 ring-transparent transition focus:ring-[var(--app-ring)]"
-              placeholder="Email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              className="w-full rounded-lg border border-[var(--app-border)] bg-white px-4 py-2.5 outline-none ring-2 ring-transparent transition focus:ring-[var(--app-ring)]"
-              placeholder="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium uppercase tracking-wider text-ink/60">Email</label>
+              <input
+                className="w-full rounded-2xl border border-stone-200 bg-white/70 px-4 py-3.5 text-ink outline-none transition-all placeholder:text-stone-400 focus:border-clay/50 focus:bg-white focus:ring-4 focus:ring-clay/10"
+                placeholder="hello@example.com"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium uppercase tracking-wider text-ink/60">Password</label>
+              <input
+                className="w-full rounded-2xl border border-stone-200 bg-white/70 px-4 py-3.5 text-ink outline-none transition-all placeholder:text-stone-400 focus:border-clay/50 focus:bg-white focus:ring-4 focus:ring-clay/10"
+                placeholder="••••••••"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
 
-            {error && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+            {error && (
+              <div className="rounded-xl bg-red-50/50 px-4 py-3 text-sm text-red-600 border border-red-100">
+                {error}
+              </div>
+            )}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-lg bg-[var(--app-primary)] px-4 py-2.5 font-medium text-[var(--app-primary-foreground)] transition hover:opacity-90 disabled:opacity-70"
+              className="btn-primary w-full shadow-lg shadow-clay/20 hover:shadow-xl hover:shadow-clay/30"
             >
-              {loading ? "Please wait..." : type === "register" ? "Create account" : "Sign in"}
+              {loading ? "Please wait..." : type === "register" ? "Create Account" : "Sign In"}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-[var(--app-muted)]">
-            {type === "register" ? "Already have an account?" : "No account yet?"}{" "}
-            <Link href={type === "register" ? "/login" : "/register"} className="font-semibold text-[var(--app-primary)]">
-              {type === "register" ? "Sign in" : "Create one"}
+          <div className="mt-8 text-center text-sm text-muted">
+            {type === "register" ? "Already have an account?" : "New to HanaDiary?"} {" "}
+            <Link
+              href={type === "register" ? "/login" : "/register"}
+              className="font-semibold text-clay decoration-2 hover:underline hover:text-clay/80"
+            >
+              {type === "register" ? "Log in" : "Create account"}
             </Link>
-          </p>
+          </div>
         </section>
       </div>
     </div>

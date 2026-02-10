@@ -6,6 +6,18 @@ import type { Entry } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 
+const moodStyles: Record<string, string> = {
+  calm: "bg-teal-50 text-teal-700 border-teal-100",
+  happy: "bg-amber-50 text-amber-700 border-amber-100",
+  focused: "bg-blue-50 text-blue-700 border-blue-100",
+  tired: "bg-slate-50 text-slate-700 border-slate-200",
+  anxious: "bg-rose-50 text-rose-700 border-rose-100",
+};
+
+function plainText(html: string) {
+  return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+}
+
 export function EntryList() {
   const { auth } = useAuth();
   const queryClient = useQueryClient();
@@ -28,32 +40,23 @@ export function EntryList() {
   });
 
   if (entriesQuery.isLoading) {
-    return (
-      <p className="rounded-xl border border-[var(--app-border)] bg-[var(--app-surface)] px-4 py-3 text-sm text-[var(--app-muted)]">
-        Loading entries...
-      </p>
-    );
+    return <p className="glass-card px-4 py-3 text-sm text-[var(--app-muted)]">Loading entries...</p>;
   }
 
   if (entriesQuery.error) {
-    return <p className="rounded-lg bg-red-50 px-3 py-2 text-red-700">{(entriesQuery.error as Error).message}</p>;
+    return <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{(entriesQuery.error as Error).message}</p>;
   }
 
   if (!entriesQuery.data?.length) {
     return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center rounded-2xl border border-[var(--app-border)] bg-[var(--app-surface)] px-4 text-center">
-        <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-[var(--app-accent)]/70">
-          <span className="font-[var(--font-heading)] text-2xl">DIARY</span>
-        </div>
-        <h2 className="font-[var(--font-heading)] text-2xl font-semibold">No diary entries yet</h2>
-        <p className="mt-2 max-w-md text-sm text-[var(--app-muted)]">
-          Start your journaling journey by creating your first diary entry.
+      <div className="glass-card flex min-h-[58vh] flex-col items-center justify-center px-6 text-center">
+        <div className="inline-flex rounded-full bg-[var(--app-accent)] px-4 py-1 text-sm font-semibold text-[var(--teal)]">Start here</div>
+        <h2 className="mt-5 font-[var(--font-heading)] text-4xl font-semibold">Write your first joyful note</h2>
+        <p className="mt-3 max-w-md text-sm text-[var(--app-muted)]">
+          Begin with one sentence about today. You can always return and expand it later.
         </p>
-        <Link
-          href="/dashboard/new"
-          className="mt-6 rounded-lg bg-[var(--app-primary)] px-6 py-2.5 font-medium text-[var(--app-primary-foreground)] transition hover:opacity-90"
-        >
-          Create Your First Entry
+        <Link href="/dashboard/new" className="btn-primary mt-6 px-6">
+          Create First Entry
         </Link>
       </div>
     );
@@ -61,42 +64,49 @@ export function EntryList() {
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      {entriesQuery.data.map((entry) => (
-        <article
-          key={entry.id}
-          className="group rounded-xl border border-[var(--app-border)] bg-[var(--app-surface)] p-6 text-left transition hover:border-[var(--app-ring)]"
-        >
-          <div className="mb-3 flex items-start justify-between gap-3">
-            <Link href={`/dashboard/${entry.id}`} className="min-w-0">
-              <h2 className="line-clamp-1 font-[var(--font-heading)] text-2xl font-semibold transition group-hover:text-[var(--app-primary)]">
-                {entry.title}
-              </h2>
-            </Link>
-            <div className="flex shrink-0 items-center gap-2 text-sm">
-              <Link
-                className="rounded-lg border border-[var(--app-border)] px-3 py-1.5 text-[var(--app-muted)] transition hover:bg-[var(--app-accent)] hover:text-[var(--app-foreground)]"
-                href={`/dashboard/${entry.id}/edit`}
-              >
-                Edit
+      {entriesQuery.data.map((entry, index) => {
+        const moodClass = moodStyles[entry.mood] ?? "bg-slate-50 text-slate-700 border-slate-200";
+        return (
+          <article
+            key={entry.id}
+            className="glass-card group p-5"
+            style={{ animation: `fadeIn 280ms ease ${index * 70}ms both` }}
+          >
+            <div className="mb-4 flex items-start justify-between gap-3">
+              <Link href={`/dashboard/${entry.id}`} className="min-w-0">
+                <h2 className="line-clamp-2 font-[var(--font-heading)] text-2xl font-semibold leading-tight transition group-hover:text-[var(--primary-strong)]">
+                  {entry.title}
+                </h2>
               </Link>
-              <button
-                type="button"
-                className="rounded-lg border border-red-200 px-3 py-1.5 text-red-700 transition hover:bg-red-50"
-                onClick={() => deleteMutation.mutate(entry.id)}
-              >
-                Delete
-              </button>
+              <span className={`chip border ${moodClass}`}>{entry.mood}</span>
             </div>
-          </div>
-          <p className="mb-4 line-clamp-2 text-sm text-[var(--app-muted)]">
-            {entry.content.replace(/<[^>]*>/g, "").trim() || "No content"}
-          </p>
-          <div className="flex items-center gap-4 text-xs text-[var(--app-muted)]">
-            <span>{new Date(entry.createdAt).toLocaleDateString()}</span>
-            <span>{new Date(entry.updatedAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}</span>
-          </div>
-        </article>
-      ))}
+
+            <p className="line-clamp-3 text-sm leading-relaxed text-[var(--app-muted)]">
+              {plainText(entry.content) || "No content"}
+            </p>
+
+            <div className="mt-6 flex items-center justify-between gap-3 border-t border-[var(--app-border)] pt-4">
+              <div className="text-xs text-[var(--app-muted)]">
+                <p>{new Date(entry.createdAt).toLocaleDateString()}</p>
+                <p>Updated {new Date(entry.updatedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
+              </div>
+
+              <div className="flex items-center gap-2 text-sm">
+                <Link className="btn-ghost px-3 py-2" href={`/dashboard/${entry.id}/edit`}>
+                  Edit
+                </Link>
+                <button
+                  type="button"
+                  className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 font-medium text-red-700 transition hover:bg-red-100"
+                  onClick={() => deleteMutation.mutate(entry.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </article>
+        );
+      })}
     </div>
   );
 }

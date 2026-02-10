@@ -8,13 +8,13 @@ export default function DashboardPage() {
   return (
     <Protected>
       <AppShell>
-        <section className="mb-8 flex items-center justify-between gap-4">
+        <section className="mb-8 flex flex-wrap items-end justify-between gap-6 px-4 sm:px-0">
           <DashboardHeader />
           <Link
             href="/dashboard/new"
-            className="rounded-lg bg-[var(--app-primary)] px-4 py-2.5 text-sm font-medium text-[var(--app-primary-foreground)] transition hover:opacity-90"
+            className="btn-primary shadow-lg shadow-clay/20 transition-transform hover:-translate-y-1 hover:shadow-xl hover:shadow-clay/30"
           >
-            New Entry
+            Write Check-in
           </Link>
         </section>
         <EntryList />
